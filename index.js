@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
-const router = express.Router();
+// const router = express.Router();
 const formidable = require("express-formidable");
 
 //authentification
@@ -16,14 +16,14 @@ app.use(cors());
 app.use(formidable());
 
 //local port :
-const local = 3000;
+// const local = 3000;
 
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json("Welcome to Marvel API !");
 });
 
 //List of comics
-router.get("/comics", async (req, res) => {
+app.get("/comics", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.MARVEL_API_KEY}`
@@ -34,7 +34,7 @@ router.get("/comics", async (req, res) => {
   }
 });
 //List of comics containing a specific character
-router.get("comics/:characterId", async (req, res) => {
+app.get("comics/:characterId", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
@@ -46,7 +46,7 @@ router.get("comics/:characterId", async (req, res) => {
 });
 
 //List of characters
-router.get("/characters", async (req, res) => {
+app.get("/characters", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.MARVEL_API_KEY}`
@@ -59,7 +59,7 @@ router.get("/characters", async (req, res) => {
 });
 
 //List of infos of a specific character
-router.get("/character/:characterId", async (req, res) => {
+app.get("/character/:characterId", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/character/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
@@ -71,7 +71,7 @@ router.get("/character/:characterId", async (req, res) => {
 });
 
 //route pour créer un nouveau compte
-router.post("/signup", async (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
     const userExist = await User.findOne({ email: req.fields.email });
 
@@ -105,7 +105,7 @@ router.post("/signup", async (req, res) => {
 });
 
 //deuxieme route pour la connection
-router.post("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const userToCheck = await User.findOne({ email: req.fields.email });
     if (userToCheck === null) {
@@ -133,6 +133,6 @@ app.all("*", (req, res) => {
   res.status(400).json("Route introuvable");
 });
 
-app.listen(process.env.PORT || local, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server started !!");
 });
