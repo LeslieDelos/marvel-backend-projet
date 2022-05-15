@@ -15,6 +15,9 @@ const app = express();
 app.use(cors());
 app.use(formidable());
 
+//local port :
+const local = 4000;
+
 router.get("/", (req, res) => {
   res.json("Welcome to Marvel API !");
 });
@@ -27,7 +30,7 @@ router.get("/comics", async (req, res) => {
     );
     res.json(response.data);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 //List of comics containing a specific character
@@ -38,7 +41,7 @@ router.get("comics/:characterId", async (req, res) => {
     );
     res.json(response.data);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -51,7 +54,7 @@ router.get("/characters", async (req, res) => {
 
     res.json(response.data);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -63,7 +66,7 @@ router.get("/character/:characterId", async (req, res) => {
     );
     res.json(response.data);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -130,6 +133,6 @@ app.all("*", (req, res) => {
   res.status(400).json("Route introuvable");
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || local, () => {
   console.log("Server started !!");
 });
