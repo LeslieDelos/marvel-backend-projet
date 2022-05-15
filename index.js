@@ -16,7 +16,7 @@ app.use(cors());
 app.use(formidable());
 
 //local port :
-const local = 4000;
+const local = 3000;
 
 router.get("/", (req, res) => {
   res.json("Welcome to Marvel API !");
