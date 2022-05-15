@@ -3,6 +3,7 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const router = express.Router();
+const formidable = require("express-formidable");
 
 //authentification
 const SHA256 = require("crypto-js/sha256");
@@ -12,6 +13,7 @@ const uid2 = require("uid2");
 const app = express();
 
 app.use(cors());
+app.use(formidable());
 
 router.get("/", (req, res) => {
   res.json("Welcome to Marvel API !");
