@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const router = express.Router();
 
 //authentification
 const SHA256 = require("crypto-js/sha256");
@@ -12,12 +13,12 @@ const app = express();
 
 app.use(cors());
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.json("Welcome to Marvel API !");
 });
 
 //List of comics
-app.get("/comics", async (req, res) => {
+router.get("/comics", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.MARVEL_API_KEY}`
@@ -28,7 +29,7 @@ app.get("/comics", async (req, res) => {
   }
 });
 //List of comics containing a specific character
-app.get("comics/:characterId", async (req, res) => {
+router.get("comics/:characterId", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
@@ -40,7 +41,7 @@ app.get("comics/:characterId", async (req, res) => {
 });
 
 //List of characters
-app.get("/characters", async (req, res) => {
+router.get("/characters", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.MARVEL_API_KEY}`
@@ -53,7 +54,7 @@ app.get("/characters", async (req, res) => {
 });
 
 //List of infos of a specific character
-app.get("/character/:characterId", async (req, res) => {
+router.get("/character/:characterId", async (req, res) => {
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/character/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
@@ -65,7 +66,7 @@ app.get("/character/:characterId", async (req, res) => {
 });
 
 //route pour créer un nouveau compte
-app.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const userExist = await User.findOne({ email: req.fields.email });
 
@@ -99,7 +100,7 @@ app.post("/signup", async (req, res) => {
 });
 
 //deuxieme route pour la connection
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const userToCheck = await User.findOne({ email: req.fields.email });
     if (userToCheck === null) {
